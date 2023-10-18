@@ -25,6 +25,32 @@ const client = new MongoClient(uri, {
   }
 });
 
+async function insertFakeData() {
+  try {
+    await client.connect();
+    const newCollection = client.db("productDb").collection("Brand");
+    
+
+    const brandData = [
+      
+        { "name": "Starbucks", "brandImage": "https://i.postimg.cc/8ChsJHqp/Starbucks-Talky.jpg" },
+        { "name": "McDonald's", "brandImage": "https://i.postimg.cc/kGZtF5wq/Mc-Donald-s.jpg" },
+        { "name": "PepsiCo", "brandImage": "https://i.postimg.cc/Bt9nnPML/pepsico.png" },
+        { "name": "Nestle", "brandImage": "https://i.postimg.cc/bJpMpyxy/Nestle.png" },
+        { "name": "Kellogg's", "brandImage": "https://i.postimg.cc/8ztQcrCF/Kellogg-s.webp" },
+        { "name": "Pran", "brandImage": "https://i.postimg.cc/25kkXD1W/pran.jpg" }
+      
+      
+    ];
+
+    const result = await newCollection.insertMany(brandData);
+    console.log(`${result.insertedCount} documents inserted`);
+  } finally {
+    client.close();
+  }
+}
+
+insertFakeData();
 
 async function run() {
   try {
