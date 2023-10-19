@@ -35,6 +35,7 @@ async function run() {
     const brandImageCollection = client
       .db("productDb")
       .collection("BrandImage");
+    const cartCollection = client.db("productDb").collection("cartData");
 
     // post method applied here
     app.post("/products", async (req, res) => {
@@ -65,6 +66,12 @@ async function run() {
       };
       const result = await productCollection.findOne(query);
       // console.log(result);
+      res.send(result);
+    });
+
+    app.post("/cartData", async (req, res) => {
+      const productInCart = req.body;
+      const result = await cartCollection.insertOne(productInCart);
       res.send(result);
     });
 
