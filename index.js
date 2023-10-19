@@ -76,6 +76,18 @@ async function run() {
       const result = await newCollection.find().toArray();
       res.send(result);
     });
+
+    
+
+    app.get("/:brandName", async (req, res) => {
+      const brand = req.query.brand;
+      const query = {
+        brand: brand,
+      };
+      const result = await productCollection.find(query).toArray();
+      console.log(result);
+      res.send(result);
+    });
     
     
 
