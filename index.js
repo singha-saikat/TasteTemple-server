@@ -77,6 +77,31 @@ async function run() {
       res.send(result);
     });
 
+    app.put("/update/:id", async (req, res) => {
+      const id = req.params.id;
+      const data = req.body;
+      console.log("id", id, data);
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedUSer = {
+        $set: {
+          image: data.image,
+          name: data.name,
+          brand: data.brand,
+          type: data.type,
+          price: data.price,
+          description: data.description,
+          rating: data.rating,
+        },
+      };
+      const result = await productCollection.updateOne(
+        query,
+        updatedUSer,
+        options
+      );
+      res.send(result);
+    });
+
     // app.post("/cartData", async (req, res) => {
     //   const productInCart = req.body;
     //   const result = await cartCollection.insertOne(productInCart);
@@ -89,11 +114,11 @@ async function run() {
       res.send(result);
     });
 
-    app.get('/cart/myCartData', async(req,res) => {
+    app.get("/cart/myCartData", async (req, res) => {
       const cursor = cartCollection.find();
       const cartData = await cursor.toArray();
       res.send(cartData);
-    })
+    });
 
     // app.get("/myCartData", async (req, res) => {
     //   try {
