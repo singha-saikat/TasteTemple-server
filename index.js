@@ -24,8 +24,6 @@ const client = new MongoClient(uri, {
   },
 });
 
-
-
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -69,11 +67,43 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/updateDetails/:_id", async (req, res) => {
+      const id = req.params._id;
+      const query = {
+        _id: new ObjectId(id),
+      };
+      const result = await productCollection.findOne(query);
+      // console.log(result);
+      res.send(result);
+    });
+
+    // app.post("/cartData", async (req, res) => {
+    //   const productInCart = req.body;
+    //   const result = await cartCollection.insertOne(productInCart);
+    //   res.send(result);
+    // });
+
     app.post("/cartData", async (req, res) => {
       const productInCart = req.body;
       const result = await cartCollection.insertOne(productInCart);
       res.send(result);
     });
+
+    app.get('/cart/myCartData', async(req,res) => {
+      const cursor = cartCollection.find();
+      const cartData = await cursor.toArray();
+      res.send(cartData);
+    })
+
+    // app.get("/myCartData", async (req, res) => {
+    //   try {
+    //     const cartData = await cartCollection.find().toArray();
+    //     res.json(cartData);
+    //   } catch (error) {
+    //     console.error("Error fetching data:", error);
+    //     res.status(500).json({ message: "Internal server error" });
+    //   }
+    // });
 
     // app.get("/:brandName", async (req, res) => {
     //   const brand = req.params.brandName;
