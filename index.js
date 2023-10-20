@@ -119,6 +119,23 @@ async function run() {
       const cartData = await cursor.toArray();
       res.send(cartData);
     });
+    // http://localhost:4000/cart/myCart/${cart._id}
+    app.delete("/delete/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      console.log("delete", id);
+      // const query = {
+      //   // "_id": new ObjectId(id),
+      //   // "_id.productData._id": new ObjectId(id),
+      //   _id : new ObjectId(id)
+      // };
+      const query = { _id:new ObjectId(id)}
+        
+      
+      const result = await cartCollection.deleteOne(query);
+      console.log(result);
+      res.send(result);
+    });
 
     // app.get("/myCartData", async (req, res) => {
     //   try {
