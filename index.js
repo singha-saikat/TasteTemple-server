@@ -57,6 +57,8 @@ async function run() {
       res.send(result);
     });
 
+    
+
     app.get("/productDetails/:_id", async (req, res) => {
       const id = req.params._id;
       const query = {
