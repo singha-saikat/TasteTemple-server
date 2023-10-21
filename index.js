@@ -26,7 +26,6 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const productCollection = client.db("productDb").collection("product");
     const newCollection = client.db("productDb").collection("Brand");
@@ -59,13 +58,12 @@ async function run() {
     app.get("/:brandName/brandImage", async (req, res) => {
       const brand = req.query.brand;
       const query = {
-          brand_name: brand,
+        brand_name: brand,
       };
       const result = await brandImageCollection.find(query).toArray(); // otherCollection represents your new collection
       console.log(result);
       res.send(result);
-  });
-    
+    });
 
     app.get("/productDetails/:_id", async (req, res) => {
       const id = req.params._id;
@@ -112,12 +110,6 @@ async function run() {
       res.send(result);
     });
 
-    // app.post("/cartData", async (req, res) => {
-    //   const productInCart = req.body;
-    //   const result = await cartCollection.insertOne(productInCart);
-    //   res.send(result);
-    // });
-
     app.post("/cartData", async (req, res) => {
       const productInCart = req.body;
       const result = await cartCollection.insertOne(productInCart);
@@ -129,44 +121,17 @@ async function run() {
       const cartData = await cursor.toArray();
       res.send(cartData);
     });
-    // http://localhost:4000/cart/myCart/${cart._id}
+
     app.delete("/delete/:id", async (req, res) => {
       const id = req.params.id;
       console.log(id);
       console.log("delete", id);
-      // const query = {
-      //   // "_id": new ObjectId(id),
-      //   // "_id.productData._id": new ObjectId(id),
-      //   _id : new ObjectId(id)
-      // };
-      const query = { _id:new ObjectId(id)}
-        
-      
+      const query = { _id: new ObjectId(id) };
+
       const result = await cartCollection.deleteOne(query);
       console.log(result);
       res.send(result);
     });
-
-    // app.get("/myCartData", async (req, res) => {
-    //   try {
-    //     const cartData = await cartCollection.find().toArray();
-    //     res.json(cartData);
-    //   } catch (error) {
-    //     console.error("Error fetching data:", error);
-    //     res.status(500).json({ message: "Internal server error" });
-    //   }
-    // });
-
-    // app.get("/:brandName", async (req, res) => {
-    //   const brand = req.params.brandName;
-    //   const query = {
-    //     brand_name: brand,
-    //   };
-    //   console.log("Querying for brand:", brand);
-    //   const result = await brandImageCollection.find(query).toArray();
-    //   console.log("Result:", result);
-    //   res.send(result);
-    // });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
