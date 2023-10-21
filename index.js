@@ -56,7 +56,15 @@ async function run() {
       console.log(result);
       res.send(result);
     });
-
+    app.get("/:brandName/brandImage", async (req, res) => {
+      const brand = req.query.brand;
+      const query = {
+          brand_name: brand,
+      };
+      const result = await brandImageCollection.find(query).toArray(); // otherCollection represents your new collection
+      console.log(result);
+      res.send(result);
+  });
     
 
     app.get("/productDetails/:_id", async (req, res) => {
